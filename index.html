@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Number Search</title>
+    <style>
+        #message {
+            display: none;
+            color: white;
+            padding: 20px;
+            margin-top: 10px;
+            background-color: #dc3545;
+            border-radius: 10px;
+            animation: fadeInOut 3s ease-in-out;
+            text-align: center;
+        }
+
+        .matchButton {
+            display: none;
+            padding: 10px 20px; /* Increased padding */
+            border: none;
+            border-radius: 5px;
+            font-size: 1.2em; /* Increased font size */
+            cursor: pointer;
+        }
+
+        .matchButton:hover {
+            opacity: 0.8;
+        }
+
+        @keyframes fadeInOut {
+            0%, 100% { opacity: 0; }
+            50% { opacity: 1; }
+        }
+    </style>
+    <script>
+        let txtContentStore1 = "";
+        let txtContentStore2 = "";
+
+        function handleFileSelectStore1(event) {
+            var file = event.target.files[0];
+            var reader = new FileReader();
+            reader.onload = function(e) {
+                txtContentStore1 = e.target.result;
+            };
+            reader.readAsText(file);
+        }
+
+        function handleFileSelectStore2(event) {
+            var file = event.target.files[0];
+            var reader = new FileReader();
+            reader.onload = function(e) {
+                txtContentStore2 = e.target.result;
+            };
+            reader.readAsText(file);
+        }
+
+        function searchNumber() {
+            var userInput = parseInt(document.getElementById("searchBox").value);
+            var numbersStore1 = txtContentStore1.split("\n").map(num => parseInt(num.trim()));
+            var numbersStore2 = txtContentStore2.split("\n").map(num => parseInt(num.trim()));
+
+            var foundStore1 = numbersStore1.includes(userInput);
+            var foundStore2 = numbersStore2.includes(userInput);
+
+            if (foundStore1 && foundStore2) {
+                document.getElementById("matchButtonStore1").style.display = "inline-block";
+                document.getElementById("matchButtonStore2").style.display = "inline-block";
+                document.getElementById("matchButtonStore1").style.backgroundColor = "blue";
+                document.getElementById("matchButtonStore2").style.backgroundColor = "green";
+            } else if (foundStore1) {
+                document.getElementById("matchButtonStore1").style.display = "inline-block";
+                document.getElementById("matchButtonStore2").style.display = "none";
+                document.getElementById("matchButtonStore1").style.backgroundColor = "blue";
+            } else if (foundStore2) {
+                document.getElementById("matchButtonStore2").style.display = "inline-block";
+                document.getElementById("matchButtonStore1").style.display = "none";
+                document.getElementById("matchButtonStore2").style.backgroundColor = "green";
+            } else {
+                document.getElementById("searchBox").value = "";
+                document.getElementById("matchButtonStore1").style.display = "none";
+                document.getElementById("matchButtonStore2").style.display = "none";
+            }
+        }
+
+        function acknowledge() {
+            document.getElementById("searchBox").value = "";
+            document.getElementById("matchButtonStore1").style.display = "none";
+            document.getElementById("matchButtonStore2").style.display = "none";
+            document.getElementById("searchBox").focus();
+        }
+
+        document.addEventListener("DOMContentLoaded", function() {
+            document.getElementById("searchBox").addEventListener("keydown", function(event) {
+                if (event.key === "Enter") {
+                    searchNumber();
+                }
+            });
+
+            document.getElementById("searchButton").addEventListener("click", function() {
+                searchNumber();
+            });
+
+            document.getElementById("txtFileStore1").addEventListener("change", function(event) {
+                handleFileSelectStore1(event);
+            });
+
+            document.getElementById("txtFileStore2").addEventListener("change", function(event) {
+                handleFileSelectStore2(event);
+            });
+
+            document.getElementById("matchButtonStore1").addEventListener("click", function() {
+                acknowledge();
+            });
+
+            document.getElementById("matchButtonStore2").addEventListener("click", function() {
+                acknowledge();
+            });
+
+            document.getElementById("matchButtonStore1").style.display = "none";
+            document.getElementById("matchButtonStore2").style.display = "none";
+        });
+    </script>
+</head>
+<body>
+    <h1>Number Search</h1>
+    <label for="txtFileStore1">[INSERT STORE NAME HERE] Wishlist:</label>
+    <input type="file" id="txtFileStore1" accept=".txt">
+    <br><br>
+    <label for="txtFileStore2">[INSERT STORE NAME HERE] Wishlist:</label>
+    <input type="file" id="txtFileStore2" accept=".txt">
+    <br><br>
+    <label for="searchBox">Scan ISBN:</label>
+    <input type="text" id="searchBox">
+    <button id="searchButton">Search</button>
+    <div id="message"></div>
+    <button id="matchButtonStore1" class="matchButton" style="color: white;">Match Found in [INSERT STORE NAME HERE] Wishlist!</button>
+    <button id="matchButtonStore2" class="matchButton" style="color: white;">Match Found in [INSERT STORE NAME HERE] Wishlist!</button>
+</body>
+</html>
