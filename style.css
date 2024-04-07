@@ -1,0 +1,28 @@
+#message {
+    display: none;
+    color: white;
+    padding: 20px;
+    margin-top: 10px;
+    background-color: #dc3545;
+    border-radius: 10px;
+    animation: fadeInOut 3s ease-in-out;
+    text-align: center;
+}
+
+.matchButton {
+    display: none;
+    padding: 10px 20px; /* Increased padding */
+    border: none;
+    border-radius: 5px;
+    font-size: 1.2em; /* Increased font size */
+    cursor: pointer;
+}
+
+.matchButton:hover {
+    opacity: 0.8;
+}
+
+@keyframes fadeInOut {
+    0%, 100% { opacity: 0; }
+    50% { opacity: 1; }
+}
